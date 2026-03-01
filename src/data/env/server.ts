@@ -12,11 +12,11 @@ export const env = createEnv({
     DB_PORT: z.string().min(1).optional(),
     DB_USER: z.string().min(1).optional(),
     DB_NAME: z.string().min(1).optional(),
-    ARCJET_KEY: z.string().min(1),
-    CLERK_SECRET_KEY: z.string().min(1),
-    HUME_API_KEY: z.string().min(1),
-    HUME_SECRET_KEY: z.string().min(1),
-    GEMINI_API_KEY: z.string().min(1),
+    ARCJET_KEY: z.string().min(1).optional(),
+    CLERK_SECRET_KEY: z.string().min(1).optional(),
+    HUME_API_KEY: z.string().min(1).optional(),
+    HUME_SECRET_KEY: z.string().min(1).optional(),
+    GEMINI_API_KEY: z.string().min(1).optional(),
   },
   createFinalSchema: env => {
     return z.object(env).transform(val => {
@@ -29,6 +29,11 @@ export const env = createEnv({
       return {
         ...rest,
         DATABASE_URL: finalDatabaseUrl,
+        ARCJET_KEY: val.ARCJET_KEY!,
+        CLERK_SECRET_KEY: val.CLERK_SECRET_KEY!,
+        HUME_API_KEY: val.HUME_API_KEY,
+        HUME_SECRET_KEY: val.HUME_SECRET_KEY,
+        GEMINI_API_KEY: val.GEMINI_API_KEY!,
       }
     })
   },
