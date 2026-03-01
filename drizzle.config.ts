@@ -5,6 +5,8 @@ import { defineConfig } from "drizzle-kit"
 config({ path: ".env.local" })
 
 const {
+  POSTGRES_URL,
+  DATABASE_URL,
   DB_HOST = "localhost",
   DB_PORT = "5432",
   DB_USER = "postgres",
@@ -12,17 +14,24 @@ const {
   DB_NAME = "ai_job_prep",
 } = process.env
 
-if (!DB_PASSWORD) {
-  throw new Error("DB_PASSWORD is required in .env.local")
-}
+const finalUrl =
+  POSTGRES_URL ??
+  DATABASE_URL ??
+  (DB_PASSWORD
+    ? `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
+    : undefined)
 
-const DATABASE_URL = `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
+if (!finalUrl) {
+  throw new Error(
+    "Set POSTGRES_URL, DATABASE_URL, or DB_PASSWORD in .env.local"
+  )
+}
 
 export default defineConfig({
   out: "./src/drizzle/migrations",
   schema: "./src/drizzle/schema.ts",
   dialect: "postgresql",
   dbCredentials: {
-    url: DATABASE_URL,
+    url: finalUrl,
   },
 })
