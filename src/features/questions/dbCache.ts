@@ -1,5 +1,5 @@
 import { getGlobalTag, getIdTag, getJobInfoTag } from "@/lib/dataCache"
-import { unstable_revalidateTag as revalidateTag } from "next/cache"
+import { revalidateTag } from "next/cache"
 
 export function getQuestionGlobalTag() {
   return getGlobalTag("questions")
@@ -20,7 +20,7 @@ export function revalidateQuestionCache({
   id: string
   jobInfoId: string
 }) {
-  revalidateTag(getQuestionGlobalTag())
-  revalidateTag(getQuestionJobInfoTag(jobInfoId))
-  revalidateTag(getQuestionIdTag(id))
+  revalidateTag(getQuestionGlobalTag(), "default")
+  revalidateTag(getQuestionJobInfoTag(jobInfoId), "default")
+  revalidateTag(getQuestionIdTag(id), "default")
 }
