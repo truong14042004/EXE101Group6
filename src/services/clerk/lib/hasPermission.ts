@@ -8,6 +8,11 @@ type Permission =
   | "5_questions"
 
 export async function hasPermission(permission: Permission) {
+  // For development: grant all permissions
+  if (process.env.NODE_ENV === 'development') {
+    return true
+  }
+  
   const { has } = await auth()
   return has({ feature: permission })
 }
