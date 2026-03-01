@@ -18,6 +18,13 @@ export const env = createEnv({
     HUME_SECRET_KEY: z.string().min(1).default("placeholder"),
     GEMINI_API_KEY: z.string().min(1).default("placeholder"),
   },
+  client: {
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1).default("placeholder"),
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().default("/sign-in"),
+    NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL: z.string().default("/app"),
+    NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL: z.string().default("/app"),
+    NEXT_PUBLIC_HUME_CONFIG_ID: z.string().default("placeholder"),
+  },
   createFinalSchema: env => {
     return z.object(env).transform(val => {
       const { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER, DATABASE_URL, POSTGRES_URL, ...rest } = val
