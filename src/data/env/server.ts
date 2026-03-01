@@ -3,8 +3,9 @@ import z from "zod"
 
 export const env = createEnv({
   server: {
-    // For production (Vercel + Neon), use DATABASE_URL directly
+    // For production (Vercel + Neon), use POSTGRES_URL or DATABASE_URL
     DATABASE_URL: z.string().url().optional(),
+    POSTGRES_URL: z.string().url().optional(),
     // For local development, use individual DB variables
     DB_PASSWORD: z.string().min(1).optional(),
     DB_HOST: z.string().min(1).optional(),
@@ -19,10 +20,10 @@ export const env = createEnv({
   },
   createFinalSchema: env => {
     return z.object(env).transform(val => {
-      const { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER, DATABASE_URL, ...rest } = val
+      const { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER, DATABASE_URL, POSTGRES_URL, ...rest } = val
       
-      // Use DATABASE_URL if provided (production), otherwise build from parts (local)
-      const finalDatabaseUrl = DATABASE_URL || 
+      // Use POSTGRES_URL (Vercel Neon), DATABASE_URL, or build from parts (local)
+      const finalDatabaseUrl = POSTGRES_URL || DATABASE_URL || 
         `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
       
       return {
