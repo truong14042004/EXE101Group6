@@ -12,11 +12,11 @@ export const env = createEnv({
     DB_PORT: z.string().min(1).optional(),
     DB_USER: z.string().min(1).optional(),
     DB_NAME: z.string().min(1).optional(),
-    ARCJET_KEY: z.string().min(1).optional(),
-    CLERK_SECRET_KEY: z.string().min(1).optional(),
-    HUME_API_KEY: z.string().min(1).optional(),
-    HUME_SECRET_KEY: z.string().min(1).optional(),
-    GEMINI_API_KEY: z.string().min(1).optional(),
+    ARCJET_KEY: z.string().min(1).default("placeholder"),
+    CLERK_SECRET_KEY: z.string().min(1).default("placeholder"),
+    HUME_API_KEY: z.string().min(1).default("placeholder"),
+    HUME_SECRET_KEY: z.string().min(1).default("placeholder"),
+    GEMINI_API_KEY: z.string().min(1).default("placeholder"),
   },
   createFinalSchema: env => {
     return z.object(env).transform(val => {
@@ -39,4 +39,5 @@ export const env = createEnv({
   },
   emptyStringAsUndefined: true,
   experimental__runtimeEnv: process.env,
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION || process.env.npm_lifecycle_event === "build",
 })
