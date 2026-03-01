@@ -13,8 +13,8 @@ export const env = createEnv({
     DB_NAME: z.string().min(1).optional(),
     ARCJET_KEY: z.string().min(1),
     CLERK_SECRET_KEY: z.string().min(1),
-    HUME_API_KEY: z.string().min(1).optional(),
-    HUME_SECRET_KEY: z.string().min(1).optional(),
+    HUME_API_KEY: z.string().min(1),
+    HUME_SECRET_KEY: z.string().min(1),
     GEMINI_API_KEY: z.string().min(1),
   },
   createFinalSchema: env => {
