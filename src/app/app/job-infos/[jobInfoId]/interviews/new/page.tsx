@@ -43,18 +43,6 @@ async function SuspendedComponent({ jobInfoId }: { jobInfoId: string }) {
   const jobInfo = await getJobInfo(jobInfoId, userId)
   if (jobInfo == null) return notFound()
 
-  // Check if Hume is configured
-  if (!env.HUME_API_KEY || !env.HUME_SECRET_KEY) {
-    return (
-      <div className="container mx-auto p-8 text-center">
-        <h1 className="text-2xl font-bold mb-4">Voice Interview Not Available</h1>
-        <p className="text-muted-foreground">
-          Voice interview feature requires Hume AI configuration. Please contact the administrator.
-        </p>
-      </div>
-    )
-  }
-
   const accessToken = await fetchAccessToken({
     apiKey: env.HUME_API_KEY,
     secretKey: env.HUME_SECRET_KEY,
